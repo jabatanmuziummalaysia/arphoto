@@ -1,90 +1,17 @@
-<!DOCTYPE html>
-<html lang="ms">
+<html>
   <head>
-    <meta charset="UTF-8" />
-    <title>Muzium AR Tanjak</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
-    <!-- A-Frame & MindAR -->
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-face-aframe.prod.js"></script>
-
-    <style>
-      html, body {
-        margin: 0;
-        padding: 0;
-        overflow: hidden;
-        background: #000;
-      }
-      #capture-btn {
-        position: fixed;
-        bottom: 20px;
-        left: 50%;
-        transform: translateX(-50%);
-        padding: 12px 20px;
-        border-radius: 999px;
-        border: none;
-        background: rgba(255,255,255,0.95);
-        font-size: 16px;
-        font-weight: 600;
-        font-family: system-ui, sans-serif;
-        z-index: 9999;
-      }
-      #capture-btn:active {
-        transform: translateX(-50%) scale(0.97);
-      }
-
-      #badge {
-        position: fixed;
-        top: 10px;
-        left: 10px;
-        padding: 6px 10px;
-        border-radius: 999px;
-        background: rgba(0,0,0,0.6);
-        color: #fff;
-        font-size: 12px;
-        font-family: system-ui, sans-serif;
-        z-index: 9999;
-      }
-    </style>
   </head>
-
   <body>
-    <div id="badge">Muzium • AR Tanjak</div>
-    <button id="capture-btn">Ambil Gambar</button>
-
-    <a-scene
-      mindar-face
-      embedded
-      vr-mode-ui="enabled: false"
-      device-orientation-permission-ui="enabled: false"
-      screenshot="width: 1080; height: 1920"
-    >
-      <!-- Kamera dikawal MindAR -->
+    <a-scene mindar-face embedded vr-mode-ui="enabled: false" device-orientation-permission-ui="enabled: false">
       <a-camera active="false" position="0 0 0"></a-camera>
 
-      <!-- Tanjak di dahi (anchorIndex 168) -->
-      <a-entity mindar-face-target="anchorIndex: 168">
-        <a-gltf-model
-          src="sigal.glb"
-          position="0 0.35 0"      
-          scale="0.03 0.03 0.03"  
-        ></a-gltf-model>
+      <!-- bola hijau test -->
+      <a-entity mindar-face-target="anchorIndex: 1">
+        <a-sphere color="green" radius="0.1"></a-sphere>
       </a-entity>
     </a-scene>
-
-    <script>
-      const btn = document.getElementById('capture-btn');
-      btn.addEventListener('click', () => {
-        const scene = document.querySelector('a-scene');
-        if (!scene.components.screenshot) {
-          alert('Fungsi screenshot belum sedia.');
-          return;
-        }
-        // Ini akan auto-download gambar PNG
-        scene.components.screenshot.capture('perspective');
-      });
-    </script>
   </body>
 </html>
-
