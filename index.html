@@ -31,15 +31,13 @@
     <!-- BUTANG AMBIL GAMBAR -->
     <button id="capture-btn">Ambil Gambar</button>
 
-    <!-- SCENE AR (KEKALKAN STRUKTUR INI) -->
+    <!-- SCENE AR (struktur asal yang dah stabil) -->
     <a-scene
       id="scene"
       mindar-face
       embedded
       vr-mode-ui="enabled: false"
-      device-orientation-permission-ui="enabled: false"
-      screenshot="width:1080; height:1920"
-    >
+      device-orientation-permission-ui="enabled: false">
       <a-camera active="false" position="0 0 0"></a-camera>
 
       <a-entity mindar-face-target="anchorIndex: 168">
@@ -53,28 +51,28 @@
     </a-scene>
 
     <script>
-      const scene = document.querySelector('#scene');
-      const btn = document.querySelector('#capture-btn');
+      const scene = document.getElementById('scene');
+      const btn = document.getElementById('capture-btn');
+
+      // Bila scene dah ready, baru kita aktifkan komponen screenshot
+      scene.addEventListener('loaded', () => {
+        scene.setAttribute('screenshot', 'width:1080; height:1920');
+      });
 
       btn.addEventListener('click', () => {
-        const screenshotComp = scene.components.screenshot;
-        if (!screenshotComp) {
-          alert("Screenshot belum sedia. Cuba lagi.");
+        const comp = scene.components.screenshot;
+        if (!comp) {
+          alert('Screenshot belum sedia. Cuba lagi dalam beberapa saat.');
           return;
         }
 
-        const canvas = screenshotComp.getCanvas('perspective');
-        if (!canvas) {
-          alert("Belum dapat gambar. Gerakkan muka sedikit dan cuba lagi.");
-          return;
+        // Ini cara paling ringkas: biar A-Frame urus capture & download
+        try {
+          comp.capture('perspective');
+        } catch (e) {
+          alert('Gagal ambil gambar: ' + e.message);
         }
-
-        const a = document.createElement('a');
-        a.href = canvas.toDataURL('image/png');
-        a.download = 'ar-sigal.png';
-        a.click();
       });
     </script>
   </body>
 </html>
-
