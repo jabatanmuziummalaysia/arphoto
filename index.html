@@ -1,90 +1,45 @@
 <!DOCTYPE html>
 <html lang="ms">
-<head>
-  <meta charset="UTF-8">
-  <title>Muzium • AR Tanjak</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Muzium AR Tanjak</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-  <!-- Stable A-Frame -->
-  <script src="https://aframe.io/releases/1.4.2/aframe.min.js"></script>
+    <!-- A-Frame & MindAR ikut dokumentasi rasmi -->
+    <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-face-aframe.prod.js"></script>
 
-  <!-- Stable MindAR (Face Tracking) -->
-  <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-face-aframe.prod.js"></script>
+    <style>
+      html, body {
+        margin: 0;
+        padding: 0;
+        overflow: hidden;
+        background: #000;
+      }
+    </style>
+  </head>
 
-  <style>
-    body, html {
-      margin: 0;
-      padding: 0;
-      overflow: hidden;
-      background: #000;
-    }
+  <body>
+    <!-- SCENE MINDAR -->
+    <a-scene
+      mindar-face
+      embedded
+      color-space="sRGB"
+      renderer="colorManagement: true, physicallyCorrectLights"
+      vr-mode-ui="enabled: false"
+      device-orientation-permission-ui="enabled: false"
+    >
+      <!-- kamera dikawal MindAR -->
+      <a-camera active="false" position="0 0 0"></a-camera>
 
-    #capture-btn {
-      position: fixed;
-      bottom: 24px;
-      left: 50%;
-      transform: translateX(-50%);
-      padding: 14px 22px;
-      border: none;
-      border-radius: 50px;
-      background: #fff;
-      font-size: 16px;
-      font-weight: 600;
-      z-index: 9999;
-    }
-
-    #logo {
-      position: fixed;
-      top: 12px;
-      left: 12px;
-      padding: 6px 12px;
-      color: white;
-      background: rgba(0,0,0,0.6);
-      border-radius: 12px;
-      z-index: 9999;
-      font-size: 14px;
-    }
-  </style>
-</head>
-
-<body>
-
-  <div id="logo">AR Tanjak</div>
-  <button id="capture-btn">Ambil Gambar</button>
-
-  <a-scene
-    mindar-face
-    embedded
-    renderer="colorManagement: true, physicallyCorrectLights: true"
-    vr-mode-ui="enabled: false"
-    device-orientation-permission-ui="enabled: false"
-    screenshot
-  >
-    <a-camera active="false"></a-camera>
-
-    <!-- anchorIndex 168 = dahi -->
-    <a-entity mindar-face-target="anchorIndex: 168">
-      <a-gltf-model
-        src="sigal.glb"
-        position="0 0.4 0"
-        scale="0.03 0.03 0.03"   <!-- sangat kecil untuk elak terlalu besar -->
-      ></a-gltf-model>
-    </a-entity>
-
-  </a-scene>
-
-  <script>
-    const btn = document.getElementById("capture-btn");
-    btn.addEventListener("click", () => {
-      const scene = document.querySelector("a-scene");
-      const dataUrl = scene.components.screenshot.getCanvas("perspective").toDataURL("image/png");
-
-      const a = document.createElement("a");
-      a.href = dataUrl;
-      a.download = "ar-tanjak-selfie.png";
-      a.click();
-    });
-  </script>
-
-</body>
+      <!-- anchor pada dahi (index 168) -->
+      <a-entity mindar-face-target="anchorIndex: 168">
+        <a-gltf-model
+          src="tanjak.glb"
+          position="0 0.35 0"
+          scale="0.03 0.03 0.03"
+        ></a-gltf-model>
+      </a-entity>
+    </a-scene>
+  </body>
 </html>
