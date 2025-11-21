@@ -1,95 +1,17 @@
-<!DOCTYPE html>
-<html lang="ms">
+<html>
   <head>
-    <meta charset="UTF-8" />
-    <title>Muzium AR Tanjak (Debug)</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
-    <!-- Versi sama seperti dokumentasi rasmi -->
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-face-aframe.prod.js"></script>
-
-    <style>
-      html, body {
-        margin: 0;
-        padding: 0;
-        overflow: hidden;
-        background: #000;
-      }
-
-      #status {
-        position: fixed;
-        top: 8px;
-        left: 8px;
-        right: 8px;
-        padding: 6px 10px;
-        font-size: 12px;
-        font-family: system-ui, sans-serif;
-        color: #fff;
-        background: rgba(0,0,0,0.6);
-        z-index: 9999;
-      }
-    </style>
   </head>
-
   <body>
-    <div id="status">Memulakan AR...</div>
-
-    <a-scene
-      mindar-face="autoStart: false"
-      embedded
-      color-space="sRGB"
-      renderer="colorManagement: true, physicallyCorrectLights"
-      vr-mode-ui="enabled: false"
-      device-orientation-permission-ui="enabled: false"
-    >
-      <!-- kamera dikawal MindAR -->
+    <a-scene mindar-face embedded vr-mode-ui="enabled: false" device-orientation-permission-ui="enabled: false">
       <a-camera active="false" position="0 0 0"></a-camera>
 
-      <!-- TEST: bola hijau di dahi -->
-      <a-entity mindar-face-target="anchorIndex: 168">
-        <a-sphere
-          radius="0.15"
-          color="green"
-          position="0 0 0"
-        ></a-sphere>
+      <!-- Bola hijau di hujung hidung (anchorIndex:1) -->
+      <a-entity mindar-face-target="anchorIndex: 1">
+        <a-sphere color="green" radius="0.1"></a-sphere>
       </a-entity>
     </a-scene>
-
-    <script>
-      document.addEventListener("DOMContentLoaded", () => {
-        const statusEl = document.getElementById("status");
-        const sceneEl = document.querySelector("a-scene");
-
-        let arSystem;
-
-        sceneEl.addEventListener("loaded", () => {
-          statusEl.textContent = "Scene loaded. Memulakan sistem AR...";
-          console.log("[DEBUG] scene loaded");
-
-          arSystem = sceneEl.systems["mindar-face-system"];
-          console.log("[DEBUG] mindar-face-system:", arSystem);
-
-          // cuba mula secara manual
-          arSystem.start().then(() => {
-            console.log("[DEBUG] arSystem.start() resolve");
-          }).catch(err => {
-            console.error("[DEBUG] arSystem.start() error:", err);
-            alert("AR start error: " + err.message);
-          });
-        });
-
-        sceneEl.addEventListener("arReady", () => {
-          statusEl.textContent = "AR sedia. Cuba gerakkan muka anda.";
-          console.log("[DEBUG] arReady event");
-        });
-
-        sceneEl.addEventListener("arError", (ev) => {
-          console.error("[DEBUG] arError event:", ev);
-          statusEl.textContent = "AR error: " + (ev.detail?.message || "Tidak diketahui");
-          alert("AR error: " + (ev.detail?.message || "Tidak diketahui"));
-        });
-      });
-    </script>
   </body>
 </html>
