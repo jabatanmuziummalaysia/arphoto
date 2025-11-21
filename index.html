@@ -4,17 +4,25 @@
     <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-face-aframe.prod.js"></script>
   </head>
-  <body>
+  <body style="margin:0; overflow:hidden; background:#000;">
     <a-scene mindar-face embedded vr-mode-ui="enabled: false" device-orientation-permission-ui="enabled: false">
       <a-camera active="false" position="0 0 0"></a-camera>
 
-      <!-- Bola hijau di hujung hidung (anchorIndex:1) -->
+      <!-- Anchor hujung hidung (anchorIndex: 1) -->
       <a-entity mindar-face-target="anchorIndex: 1">
+        <!-- Bola hijau penanda -->
         <a-sphere
           color="green"
           radius="0.1"
           position="0 0 0">
         </a-sphere>
+
+        <!-- Model sigal -->
+        <a-gltf-model
+          src="sigal.glb"
+          position="0 0.4 0"
+          scale="0.06 0.06 0.06">
+        </a-gltf-model>
       </a-entity>
     </a-scene>
   </body>
