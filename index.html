@@ -2,10 +2,10 @@
 <html lang="ms">
   <head>
     <meta charset="UTF-8" />
-    <title>Test MindAR Muka</title>
+    <title>Muzium AR Tanjak (Debug)</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    <!-- Versi sama macam demo rasmi -->
+    <!-- Versi sama seperti dokumentasi rasmi -->
     <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-face-aframe.prod.js"></script>
 
@@ -16,12 +16,27 @@
         overflow: hidden;
         background: #000;
       }
+
+      #status {
+        position: fixed;
+        top: 8px;
+        left: 8px;
+        right: 8px;
+        padding: 6px 10px;
+        font-size: 12px;
+        font-family: system-ui, sans-serif;
+        color: #fff;
+        background: rgba(0,0,0,0.6);
+        z-index: 9999;
+      }
     </style>
   </head>
 
   <body>
+    <div id="status">Memulakan AR...</div>
+
     <a-scene
-      mindar-face
+      mindar-face="autoStart: false"
       embedded
       color-space="sRGB"
       renderer="colorManagement: true, physicallyCorrectLights"
@@ -31,7 +46,7 @@
       <!-- kamera dikawal MindAR -->
       <a-camera active="false" position="0 0 0"></a-camera>
 
-      <!-- Bola hijau di dahi (anchorIndex 168) -->
+      <!-- TEST: bola hijau di dahi -->
       <a-entity mindar-face-target="anchorIndex: 168">
         <a-sphere
           radius="0.15"
@@ -40,5 +55,41 @@
         ></a-sphere>
       </a-entity>
     </a-scene>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        const statusEl = document.getElementById("status");
+        const sceneEl = document.querySelector("a-scene");
+
+        let arSystem;
+
+        sceneEl.addEventListener("loaded", () => {
+          statusEl.textContent = "Scene loaded. Memulakan sistem AR...";
+          console.log("[DEBUG] scene loaded");
+
+          arSystem = sceneEl.systems["mindar-face-system"];
+          console.log("[DEBUG] mindar-face-system:", arSystem);
+
+          // cuba mula secara manual
+          arSystem.start().then(() => {
+            console.log("[DEBUG] arSystem.start() resolve");
+          }).catch(err => {
+            console.error("[DEBUG] arSystem.start() error:", err);
+            alert("AR start error: " + err.message);
+          });
+        });
+
+        sceneEl.addEventListener("arReady", () => {
+          statusEl.textContent = "AR sedia. Cuba gerakkan muka anda.";
+          console.log("[DEBUG] arReady event");
+        });
+
+        sceneEl.addEventListener("arError", (ev) => {
+          console.error("[DEBUG] arError event:", ev);
+          statusEl.textContent = "AR error: " + (ev.detail?.message || "Tidak diketahui");
+          alert("AR error: " + (ev.detail?.message || "Tidak diketahui"));
+        });
+      });
+    </script>
   </body>
 </html>
