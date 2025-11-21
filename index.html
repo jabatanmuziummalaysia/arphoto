@@ -31,6 +31,7 @@
         font-family: system-ui, sans-serif;
         z-index: 9999;
       }
+
       #capture-btn:active {
         transform: translateX(-50%) scale(0.97);
       }
@@ -61,16 +62,16 @@
       device-orientation-permission-ui="enabled: false"
       screenshot="width: 1080; height: 1920"
     >
-      <!-- Kamera dikawal oleh MindAR -->
+      <!-- Kamera dikawal MindAR -->
       <a-camera active="false" position="0 0 0"></a-camera>
 
       <!-- Tanjak di kawasan dahi (anchorIndex 168) -->
       <a-entity mindar-face-target="anchorIndex: 168">
         <a-gltf-model
-          src="sigal.glb"
-          position="0 0.35 0"     
-          scale="0.18 0.18 0.18"   
-        ></a-gltf-model>
+          src="tanjak.glb"
+          position="0 0.35 0"
+          scale="0.18 0.18 0.18">
+        </a-gltf-model>
       </a-entity>
     </a-scene>
 
@@ -83,17 +84,8 @@
           alert('Fungsi screenshot belum sedia.');
           return;
         }
-
-        const canvas = scene.components.screenshot.getCanvas('perspective');
-        if (!canvas) {
-          alert('Canvas belum tersedia. Cuba sekali lagi.');
-          return;
-        }
-
-        const a = document.createElement('a');
-        a.href = canvas.toDataURL('image/png');
-        a.download = 'ar-tanjak-selfie.png';
-        a.click();
+        // Ini akan auto-download PNG dari paparan semasa
+        scene.components.screenshot.capture('perspective');
       });
     </script>
   </body>
