@@ -2,10 +2,10 @@
 <html lang="ms">
   <head>
     <meta charset="UTF-8" />
-    <title>Muzium AR Tanjak</title>
+    <title>Test MindAR Muka</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    <!-- A-Frame & MindAR ikut dokumentasi rasmi -->
+    <!-- Versi sama macam demo rasmi -->
     <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-face-aframe.prod.js"></script>
 
@@ -20,7 +20,6 @@
   </head>
 
   <body>
-    <!-- SCENE MINDAR -->
     <a-scene
       mindar-face
       embedded
@@ -32,15 +31,14 @@
       <!-- kamera dikawal MindAR -->
       <a-camera active="false" position="0 0 0"></a-camera>
 
-      <!-- anchor pada dahi (index 168) -->
+      <!-- Bola hijau di dahi (anchorIndex 168) -->
       <a-entity mindar-face-target="anchorIndex: 168">
-        <a-gltf-model
-          src="sigal.glb"
-          position="0 0.35 0"
-          scale="0.03 0.03 0.03"
-        ></a-gltf-model>
+        <a-sphere
+          radius="0.15"
+          color="green"
+          position="0 0 0"
+        ></a-sphere>
       </a-entity>
     </a-scene>
   </body>
 </html>
-
