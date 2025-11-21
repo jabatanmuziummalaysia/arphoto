@@ -1,38 +1,16 @@
-<!DOCTYPE html>
-<html lang="ms">
+<html>
   <head>
-    <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Muzium AR Tanjak (Asas)</title>
-
-    <!-- A-Frame & MindAR (versi yang memang dah jalan tadi) -->
     <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-face-aframe.prod.js"></script>
   </head>
-
-  <body style="margin:0; overflow:hidden; background:#000;">
-    <a-scene
-      mindar-face
-      embedded
-      vr-mode-ui="enabled: false"
-      device-orientation-permission-ui="enabled: false"
-    >
+  <body>
+    <a-scene mindar-face embedded vr-mode-ui="enabled: false" device-orientation-permission-ui="enabled: false">
       <a-camera active="false" position="0 0 0"></a-camera>
 
-      <!-- Anchor di hujung hidung (index 1) -->
+      <!-- Bola hijau di hujung hidung (anchorIndex:1) -->
       <a-entity mindar-face-target="anchorIndex: 1">
-        <!-- Bola hijau penanda -->
-        <a-sphere
-          color="green"
-          radius="0.1">
-        </a-sphere>
-
-        <!-- Tanjak (ikut anchor yang sama, nanti kita adjust posisi) -->
-        <a-gltf-model
-          src="sigal.glb"
-          position="0 0.4 0"
-          scale="0.03 0.03 0.03">
-        </a-gltf-model>
+        <a-sphere color="green" radius="0.1"></a-sphere>
       </a-entity>
     </a-scene>
   </body>
