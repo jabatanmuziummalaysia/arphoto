@@ -5,64 +5,19 @@
     <title>Muzium AR Tanjak</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    <!-- A-Frame & MindAR test-->
+    <!-- A-Frame & MindAR sama macam versi yang berjaya -->
     <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-face-aframe.prod.js"></script>
-
-    <style>
-      html, body {
-        margin: 0;
-        padding: 0;
-        overflow: hidden;
-        background: #000;
-      }
-
-      #capture-btn {
-        position: fixed;
-        bottom: 20px;
-        left: 50%;
-        transform: translateX(-50%);
-        padding: 12px 20px;
-        border-radius: 999px;
-        border: none;
-        background: rgba(255,255,255,0.95);
-        font-size: 16px;
-        font-weight: 600;
-        font-family: system-ui, sans-serif;
-        z-index: 9999;
-      }
-
-      #capture-btn:active {
-        transform: translateX(-50%) scale(0.97);
-      }
-
-      #badge {
-        position: fixed;
-        top: 10px;
-        left: 10px;
-        padding: 6px 10px;
-        border-radius: 999px;
-        background: rgba(0,0,0,0.6);
-        color: #fff;
-        font-size: 12px;
-        font-family: system-ui, sans-serif;
-        z-index: 9999;
-      }
-    </style>
   </head>
 
-  <body>
-    <div id="badge">Muzium • AR Tanjak</div>
-    <button id="capture-btn">Ambil Gambar</button>
+  <body style="margin:0; overflow:hidden; background:#000;">
 
-    <a-scene
-      mindar-face
-      embedded
-      vr-mode-ui="enabled: false"
-      device-orientation-permission-ui="enabled: false"
-      screenshot="width: 1080; height: 1920"
-    >
-      <!-- Kamera dikawal MindAR -->
+    <!-- SCENE AR -->
+    <a-scene id="scene"
+             mindar-face
+             embedded
+             vr-mode-ui="enabled: false"
+             device-orientation-permission-ui="enabled: false">
       <a-camera active="false" position="0 0 0"></a-camera>
 
       <!-- Tanjak di kawasan dahi (anchorIndex 168) -->
@@ -75,20 +30,52 @@
       </a-entity>
     </a-scene>
 
+    <!-- Butang ambil gambar (overlay biasa) -->
+    <button id="capture-btn"
+            style="
+              position:fixed;
+              bottom:20px;
+              left:50%;
+              transform:translateX(-50%);
+              padding:12px 20px;
+              border-radius:999px;
+              border:none;
+              background:rgba(255,255,255,0.95);
+              font-size:16px;
+              font-weight:600;
+              font-family:system-ui, sans-serif;
+              z-index:9999;
+            ">
+      Ambil Gambar
+    </button>
+
     <script>
+      const scene = document.getElementById('scene');
       const btn = document.getElementById('capture-btn');
 
+      // Bila scene dah load, baru aktifkan komponen screenshot
+      scene.addEventListener('loaded', () => {
+        scene.setAttribute('screenshot', 'width:1080; height:1920');
+      });
+
       btn.addEventListener('click', () => {
-        const scene = document.querySelector('a-scene');
-        if (!scene.components.screenshot) {
-          alert('Fungsi screenshot belum sedia.');
+        const comp = scene.components.screenshot;
+        if (!comp) {
+          alert('Fungsi screenshot belum sedia. Cuba lagi dalam beberapa saat.');
           return;
         }
-        // Ini akan auto-download PNG dari paparan semasa
-        scene.components.screenshot.capture('perspective');
+
+        const canvas = comp.getCanvas('perspective');
+        if (!canvas) {
+          alert('Paparan belum sedia. Gerakkan muka sedikit dan cuba lagi.');
+          return;
+        }
+
+        const a = document.createElement('a');
+        a.href = canvas.toDataURL('image/png');
+        a.download = 'ar-tanjak-selfie.png';
+        a.click();
       });
     </script>
   </body>
 </html>
-
-
