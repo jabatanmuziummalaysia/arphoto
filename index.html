@@ -28,16 +28,13 @@
 
   <body style="margin:0; overflow:hidden; background:#000;">
 
-    <!-- BUTANG AMBIL GAMBAR -->
     <button id="capture-btn">Ambil Gambar</button>
 
-    <!-- SCENE AR (struktur asal yang dah stabil) -->
-    <a-scene
-      id="scene"
-      mindar-face
-      embedded
-      vr-mode-ui="enabled: false"
-      device-orientation-permission-ui="enabled: false">
+    <a-scene id="scene"
+             mindar-face
+             embedded
+             vr-mode-ui="enabled: false"
+             device-orientation-permission-ui="enabled: false">
       <a-camera active="false" position="0 0 0"></a-camera>
 
       <a-entity mindar-face-target="anchorIndex: 168">
@@ -54,7 +51,7 @@
       const scene = document.getElementById('scene');
       const btn = document.getElementById('capture-btn');
 
-      // Bila scene dah ready, baru kita aktifkan komponen screenshot
+      // Aktifkan komponen screenshot selepas scene ready
       scene.addEventListener('loaded', () => {
         scene.setAttribute('screenshot', 'width:1080; height:1920');
       });
@@ -62,15 +59,14 @@
       btn.addEventListener('click', () => {
         const comp = scene.components.screenshot;
         if (!comp) {
-          alert('Screenshot belum sedia. Cuba lagi dalam beberapa saat.');
+          alert('Screenshot belum sedia. Cuba lagi sekejap.');
           return;
         }
 
-        // Ini cara paling ringkas: biar A-Frame urus capture & download
         try {
-          comp.capture('perspective');
+          comp.capture('perspective'); // A-Frame akan auto-download PNG
         } catch (e) {
-          alert('Gagal ambil gambar: ' + e.message);
+          alert('Ralat semasa ambil gambar: ' + e.message);
         }
       });
     </script>
