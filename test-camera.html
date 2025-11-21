@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+  <meta charset="UTF-8">
+  <title>Test Kamera GitHub</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body { margin: 0; background: #000; display: flex; align-items: center; justify-content: center; height: 100vh; }
+    video { max-width: 100%; max-height: 100%; }
+  </style>
+</head>
+<body>
+  <video id="cam" autoplay playsinline></video>
+
+  <script>
+    async function startCam() {
+      try {
+        const stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: false });
+        const video = document.getElementById('cam');
+        video.srcObject = stream;
+      } catch (err) {
+        alert('Gagal akses kamera: ' + err.name + ' - ' + err.message);
+      }
+    }
+    startCam();
+  </script>
+</body>
+</html>
